@@ -1,0 +1,28 @@
+create table Customer(
+regId varchar(20) primary key,
+name varchar(20) not null,
+address varchar(255) not null,
+email varchar(30) not null,
+contactNo number(10)
+);
+
+create table Login(
+logId varchar(20) references Customer(regId),
+password varchar(20) not null
+);
+
+create table Plan(
+planId number(10) primary key,
+planName varchar(50) not null,
+planType varchar(20) not null,
+tariff number(3,2),
+validity number(3),
+rental varchar(255)
+);
+
+select * from Customer;
+select * from Login;
+select * from Plan;
+
+drop table Login;
+drop table Customer;

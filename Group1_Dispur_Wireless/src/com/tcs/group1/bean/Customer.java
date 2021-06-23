@@ -2,18 +2,18 @@ package com.tcs.group1.bean;
 
 public class Customer {
 	
-	private String id;
+	private String regId;
 	private String name;
 	private String address;
 	private String email;
 	private int contactNo;
 	
-	// getter and setter
-	public String getId() {
-		return id;
+	//getter and setter
+	public String getRegId() {
+		return regId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setRegId(String regId) {
+		this.regId = regId;
 	}
 	public String getName() {
 		return name;
@@ -41,9 +41,9 @@ public class Customer {
 	}
 	
 	//constructor
-	public Customer(String id, String name, String address, String email, int contactNo) {
+	public Customer(String regId, String name, String address, String email, int contactNo) {
 		super();
-		this.id = id;
+		this.regId = regId;
 		this.name = name;
 		this.address = address;
 		this.email = email;
@@ -51,8 +51,9 @@ public class Customer {
 	}
 	
 	public Customer() {
-		
+	
 	}
-	///
+	
+	
 	
 }
