@@ -6,7 +6,7 @@ public class Customer {
 	private String name;
 	private String address;
 	private String email;
-	private int contactNo;
+	private String contactNo;
 	
 	//getter and setter
 	public String getRegId() {
@@ -33,15 +33,15 @@ public class Customer {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getContactNo() {
+	public String getContactNo() {
 		return contactNo;
 	}
-	public void setContactNo(int contactNo) {
+	public void setContactNo(String contactNo) {
 		this.contactNo = contactNo;
 	}
 	
 	//constructor
-	public Customer(String regId, String name, String address, String email, int contactNo) {
+	public Customer(String regId, String name, String address, String email, String contactNo) {
 		super();
 		this.regId = regId;
 		this.name = name;
@@ -51,7 +51,7 @@ public class Customer {
 	}
 	
 	public Customer() {
-	
+		
 	}
 	
 	
