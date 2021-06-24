@@ -1,15 +1,17 @@
 package com.tcs.group1.util;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBUtil {
-	
+
 	private static final String DRIVERNAME = "oracle.jdbc.driver.OracleDriver";
-	private static final String URL = "jdbc:oracle:thin:@localhost:1521:XE";
-	private static final String PASSWORD = "password";
+	private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+	private static final String PASSWORD = "@Mas91196";
 	private static final String USERNAME = "SYSTEM";
 
 	// get a database connection
@@ -19,7 +21,7 @@ public class DBUtil {
 			Class.forName(DRIVERNAME);
 			
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			System.out.println("connection establisted");
+			System.out.println("===================");
 		} catch (ClassNotFoundException ex) {
 
 			System.out.println("connection not establisted" + ex);
@@ -64,7 +66,6 @@ public class DBUtil {
 			}
 		}
 	}
-	
-	
+
 
 }
