@@ -109,7 +109,7 @@ public class Tester {
 //			 		unSubs();
 			 		break;
 			 	case 5:
-//			 		changePlan();
+			 		changePlan(Id);
 			 		break;
 			 	case 6:
 			 		mainMenu();
@@ -188,6 +188,51 @@ public class Tester {
 		customerMenu(id);
 		
 	}
+	
+//	public void Login(){
+//
+//		Scanner s = new Scanner(System.in);
+//		System.out.println("\n        Login Page");
+//		System.out.println("===============================");
+//
+//		System.out.println (" Enter your User ID : ");
+//		String id = s.next();
+//		LoginDAO cred=new LoginDAO();
+//		//create new array list that stored all login table data
+//		ArrayList<Login> viewlog = new ArrayList<Login>();
+//		viewlog = cred.fetchLogin(id);
+//			for (Login L :viewlog){ //iterate data in table
+//				if(id.equals(L.getLogId())){ // check if entered id is matched with current id in table
+//					
+//					System.out.println(" Enter your password :");
+//					String password = s.next();
+//					
+//					if (password.equals(L.getPassword())) {// check if password entered is matching with the stored password
+//						System.out.println("Login Successful !");
+//						
+//						CustomerDAO cred1=new CustomerDAO();
+//						ArrayList<Customer> viewcred = new ArrayList<Customer>();
+//						viewcred = cred1.fetchCustomer(id);
+//						
+//						for (Customer C :viewcred){
+//							System.out.println("ID:"+C.getRegId()+"\n"+ "Name:"+C.getName()+"\n"+"Address:"+ C.getAddress()+"\n"+"Email ID:"+ C.getEmail()+"\n"+"Contact Number:"+C.getContactNo());
+//						}
+//						customerMenu(id);// go to customer menu
+//
+//					}
+//					else{
+//						System.out.println("Invalid password");
+//						Login();
+//					}
+//				}
+//				else
+//				{
+//					System.out.println("No User found with this ID");
+//					mainMenu();
+//				}
+//			}
+//			
+//	}
 	
 	//=====================================Enter password============================================
 	
@@ -306,6 +351,17 @@ public class Tester {
 		customerMenu(Id);
 		
 	}
+	//=================================================Customer Change Plan=================================================
+	public void changePlan(String Id) {
+		
+		int current = 94;
+		int changedId = 34;
+		System.out.println("Changing Plan from " +current+ " to "+ changedId);
+		daos.changeSubs(Id, current, changedId);
+		
+	}
+	
+	
 	//=====================================manager menu=================================================================
 	public void managerMenu() {
 		
