@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.tcs.group1.bean.Customer;
 import com.tcs.group1.bean.Login;
 import com.tcs.group1.util.DBUtil;
 
@@ -39,6 +41,34 @@ public class LoginDAO {
 		}
 		return result;
 		
+	}
+	
+	public ArrayList<Login> fetchLogin()
+	{
+		
+		ArrayList<Login> loglist=new ArrayList<Login>();
+		con=DBUtil.getConnection();
+		try {
+			ps=con.prepareStatement("select * from Login");
+//			ps.setString(1, LogId);
+			rs=ps.executeQuery();  //select
+			while(rs.next())
+			{
+				
+				String id=rs.getString(1);
+				String password=rs.getString(2);
+				
+				Login l=new Login(id,password);
+				loglist.add(l);
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return loglist;
 	}
 		
 		

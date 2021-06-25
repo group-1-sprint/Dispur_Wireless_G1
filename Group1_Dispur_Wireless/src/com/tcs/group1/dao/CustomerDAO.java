@@ -105,5 +105,25 @@ public class CustomerDAO {
 		return res;
 		
 	}
+	
+	//====================================Admin Delete Customer Details=====================================================
+	
+	public ArrayList<Customer> delCustomer(String CustId)
+	{
+		
+		ArrayList<Customer> list=new ArrayList<Customer>();
+		con=DBUtil.getConnection();
+		try {
+			ps=con.prepareStatement("DELETE FROM Customer where regId=?");
+			ps.setString(1, CustId);
+			System.out.println("Successfully delete customer with id "+ CustId);
+			rs=ps.executeQuery();  //delete
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 }
