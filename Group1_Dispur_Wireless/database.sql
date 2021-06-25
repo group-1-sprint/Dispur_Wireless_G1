@@ -59,10 +59,10 @@ select * from Customer join Login on Customer.regId = Login.logId;
 select * from Plan;
 select * from Subscription;
 
-drop table Login;
-drop table Customer;
-drop table Plan;
-drop table Subscription;
+--drop table Login;
+--drop table Customer;
+--drop table Plan;
+--drop table Subscription;
 
-delete from Customer;
-delete from Login;
+--delete from Customer;
+--delete from Login;

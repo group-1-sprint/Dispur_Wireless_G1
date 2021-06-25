@@ -5,15 +5,18 @@ import java.util.Scanner;
 import com.tcs.group1.bean.Customer;
 import com.tcs.group1.bean.Login;
 import com.tcs.group1.bean.Plan;
+import com.tcs.group1.bean.Subscribe;
 import com.tcs.group1.dao.CustomerDAO;
 import com.tcs.group1.dao.LoginDAO;
 import com.tcs.group1.dao.PlanDAO;
+import com.tcs.group1.dao.SubscribeDAO;
 
 public class Tester {
 	
 	CustomerDAO daoc = new CustomerDAO();
 	PlanDAO daop = new PlanDAO();
-	LoginDAO daol = new LoginDAO(); 
+	LoginDAO daol = new LoginDAO();
+	SubscribeDAO daos = new SubscribeDAO();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -232,7 +235,7 @@ public class Tester {
 			 
 			 switch (ans){
 			 	case 1:
-			 		subscribe();
+			 		subscribe(Id);
 			 		break;
 			 	case 2:
 			 		customerMenu(Id);
@@ -255,7 +258,6 @@ public class Tester {
 					System.out.println("Invalid Input!");
 			 }
 			 
-			 
 		 }
 		
 	}
@@ -269,19 +271,39 @@ public class Tester {
 			System.out.println("ID:"+c.getRegId()+"\n"+ "Name:"+c.getName()+"\n"+"Address:"+ c.getAddress()+"\n"+"Email ID:"+ c.getEmail()+"\n"+"Contact Number:"+c.getContactNo());
 		}
 		
-		
 	}
 	
-	public void subscribe() {
+	public void subscribe(String Id) {
 		
+		ArrayList<Plan> list=new ArrayList<Plan>();
+		list=daop.fetchPlan();
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter plan id to view details and subscribe");
 		System.out.print("Plan Id: ");
+		boolean sel = true;
+		do {
+			
+			int planId = sc.nextInt();
+			for(Plan p : list)
+			{
+				 if(planId == p.getPlanId()) {
+					 System.out.println("Plan Id: "+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+"\n"+"Validity: "+p.getValidity()+"\n");
+					 System.out.println("Amount is RM "+p.getTariff());
+					 System.out.println("Proceed with Subscription?");
+					 System.out.println("1.Yes"+"\n"+"2.No");
+					 int select = sc.nextInt();
+					 if(select == 1) {
+						 sel = false;
+						 Subscribe sub = new Subscribe(Tester.getRandomIntegerBetweenRange(1,100),Id,planId,Tester.getRandomIntegerBetweenRange(1,5));
+						 daos.addSubs(sub);
+						 break;
+					 }
+				 }
+			}
+			
+		}while(sel);
 		
-//		do {
-//			
-//			int chId = sc.nextInt();
-//			
-//		}while(chId);
+		customerMenu(Id);
 		
 	}
 	//=====================================manager menu=================================================================
@@ -417,12 +439,7 @@ public class Tester {
 		adminMenu();
 		
 	}
-	
-//	================================================operator menu=========================================================
-	public void operatorMenu() {
-		System.out.println("Not ready yet!");
-		mainMenu();
-	}
+
 	
 	//============================================Method to view plan list==================================================
 	public void planList(){
