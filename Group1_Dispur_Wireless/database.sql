@@ -10,25 +10,8 @@ regId varchar(20) references Login(logId),
 name varchar(20) not null,
 address varchar(255) not null,
 email varchar(30) not null,
-contactNo varchar(12)
---status varchar(10) default 'Inactive'
+contactNo varchar(12) not null
 );
-
---insert manager, admin and operator credentioal
-insert into Login values('Manager','Manager');
-insert into Login values('Admin','Admin');
-insert into Login values('Operator','Operator'); 
-
-insert into Login values('316','lol');
-insert into Customer(regId,name,address,email,contactNo) values('316','shamira','kl','s@t.com','238');
-insert into Login values('971','lel');
-insert into Customer(regId,name,address,email,contactNo) values('971','aizat','prk','a@b.com','2412');
-insert into Login values('825','lil');
-insert into Customer(regId,name,address,email,contactNo) values('825','curtis','kl','c@t.com','523');
-insert into Login values('106','lal');
-insert into Customer(regId,name,address,email,contactNo) values('106','thanusha','sg','s@t.com','15124');
-insert into Login values('402','lul');
-insert into Customer(regId,name,address,email,contactNo) values('402','dheera','png','c@t.com','15123');
 
 --table plan creation
 create table Plan(
@@ -40,29 +23,52 @@ validity number(3),
 rental varchar(255)
 );
 
-insert into Plan values(12,'MX45','30GB','0.5','30','');
-insert into Plan values(34,'MX44','33GB','0.4','7','No');
-insert into Plan values(45,'MX430','130GB','0.1','1','');
-insert into Plan values(94,'MX421','230GB','0.9','14','Yes');
-
---table creation
+--Subscription table creation
 create table Subscription(
 subId number(3) primary key,
 custId varchar(20) references Login(logId),
 planId number(10) references Plan(planId),
-duration number(1) check(duration >= 0 and duration <=3)
+duration number(2)
 );
 
+--insert manager, admin and operator credential
+insert into Login values('Manager','Manager');
+insert into Login values('Admin','Admin');
+insert into Login values('Operator','Operator'); 
+
+--hardcoded data for login and customer for testing purpose
+insert into Login values('316','123');
+insert into Customer(regId,name,address,email,contactNo) values('316','shamira','kl','s@t.com','0185674836');
+insert into Login values('971','456');
+insert into Customer(regId,name,address,email,contactNo) values('971','aizat','prk','a@b.com','0194273648');
+insert into Login values('825','789');
+insert into Customer(regId,name,address,email,contactNo) values('825','curtis','kl','c@t.com','0158293746');
+insert into Login values('106','101');
+insert into Customer(regId,name,address,email,contactNo) values('106','thanusha','sg','s@t.com','0172394658');
+insert into Login values('402','112');
+insert into Customer(regId,name,address,email,contactNo) values('402','dheera','png','c@t.com','0129380998');
+
+--hard coded data for plan table for testing purpose
+insert into Plan values(12,'MX45','Data',30.0,7,'Yes');
+insert into Plan values(34,'MX44','Voice',7.0,30,'No');
+insert into Plan values(45,'MX430','Voice',5.0,60,'Yes');
+insert into Plan values(94,'MX421','Data',40.0,14,'Yes');
+
+--to display tables content
 select * from Customer;
 select * from Login;
 select * from Customer join Login on Customer.regId = Login.logId;
 select * from Plan;
 select * from Subscription;
 
---drop table Login;
---drop table Customer;
---drop table Plan;
---drop table Subscription;
+--join plan and customer table with subscribe table
+select Subscription.subId, Customer.regId, Customer.name, Subscription.planId, Plan.planName, Plan.planType, Plan.tariff, Plan.validity, Plan.rental, Subscription.duration from ((Subscription join Plan on Subscription.planId=Plan.planId) join Customer on Subscription.custId = Customer.regId) where Customer.regId=316;
+select Subscription.planId, Plan.planName, Plan.planType, Plan.tariff, Plan.validity, Plan.rental from Subscription join Plan on Subscription.planId=Plan.planId where Subscription.custId=316;
+
+drop table Login;
+drop table Customer;
+drop table Plan;
+drop table Subscription;
 
 --delete from Customer;
 --delete from Login;

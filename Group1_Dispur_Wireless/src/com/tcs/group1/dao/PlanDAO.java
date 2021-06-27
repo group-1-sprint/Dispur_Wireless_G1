@@ -31,7 +31,9 @@ public class PlanDAO {
             ps.setDouble(4, p.getTariff());
             ps.setInt(5, p.getValidity());
             ps.setString(6, p.getRental());
-            result=ps.executeUpdate(); //dml 
+            result=ps.executeUpdate(); //dml
+            
+            System.out.println("New Plan with ID "+p.getPlanId()+ " successfully added\n");
 		
 		
 		} catch (SQLException e1) {
@@ -55,11 +57,14 @@ public class PlanDAO {
 		int rows=0;
 		con=DBUtil.getConnection();
 		try {
-			ps=con.prepareStatement("delete from Plan where planId=?");
+			ps=con.prepareStatement("delete from Subscription where planId=?");
 			ps.setInt(1, id);
-			System.out.println("Successfully deleted the plan!!");
 			rows=ps.executeUpdate(); //dml insert,delete ,update
 			
+			ps=con.prepareStatement("delete from Plan where planId=?");
+			ps.setInt(1, id);
+			rows=ps.executeUpdate(); //dml insert,delete ,update
+			System.out.println("Successfully deleted the plan!!");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -91,7 +96,7 @@ public class PlanDAO {
 			ps.setInt(6, id);
 			res=ps.executeUpdate();  //return int (rows affected)
 			
-			System.out.println("Plan details with id "+id+" updated");
+			System.out.println("Plan details with id "+id+" updated\n");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -21,7 +21,7 @@ public class DBUtil {
 			Class.forName(DRIVERNAME);
 			
 			connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			System.out.println("===================");
+//			System.out.println("===================");
 		} catch (ClassNotFoundException ex) {
 
 			System.out.println("connection not establisted" + ex);

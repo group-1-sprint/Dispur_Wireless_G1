@@ -17,6 +17,7 @@ public class Tester {
 	PlanDAO daop = new PlanDAO();
 	LoginDAO daol = new LoginDAO();
 	SubscribeDAO daos = new SubscribeDAO();
+	Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -32,63 +33,136 @@ public class Tester {
 	
 	public void mainMenu() {
 		
-		Scanner sc = new Scanner(System.in);
 		int selection;
-//		boolean loginStatus = false;
 		String Id = null;
+		
+		System.out.println("\n==================Main Menu====================");
 		System.out.println("=============================================== ");
-		System.out.println("|             1.Manager                         |");
-		System.out.println("|             2.Admin                           | ");
-		System.out.println("|             3.Registration                    | ");
-		System.out.println("|             4.Login                           | ");
-		System.out.println("|             5.Portal                          | ");
-		System.out.println("|             6.Exit                            | ");
+		System.out.println("|             1.Registration                    | ");
+		System.out.println("|             2.Login                           | ");
+		System.out.println("|             3.View Plan                       | ");
+		System.out.println("|             4.Exit                            | ");
 		System.out.println("=============================================== ");
 		
-		System.out.print("Please make a selection: ");
+		System.out.print("\nPlease make a selection: ");
 		selection =sc.nextInt();
 	
 		 switch (selection){
 		 	case 1:
-		 		managerMenu();
+		 		UserRegistration();		 		
 		 		break;
 		 	case 2:
-		 		adminMenu();
-		 		break;
-		 	case 3:
-		 		UserRegistration();
-		 		break;
-		 	case 4:
 		 		login();
 		 		break;
-		 	case 5:
+		 	case 3:
 		 		portalView(Id);
 		 		break;
-		 	case 6:
-		 		System.out.print("Thank you for using our system");
-		 		break;
+		 	case 4:
+		 		System.out.print("\nThank you for using our system");
+		 		System.exit(0);
 		 		
 		 	default:
 				System.out.println("Invalid Input!");
-				mainMenu();
 		 }
-		 
+		 mainMenu();
 		
 	}
+	
+	//=====================================manager menu=================================================================
+	
+		public void managerMenu() {
+			
+			int selection;
+			System.out.println("\n==================Manager Menu====================");
+			System.out.println("=============================================== ");
+			System.out.println("|             1.View Customer Details           |");
+			System.out.println("|             2.View Customer Subscribe Details | ");
+			System.out.println("|             3.Main Menu                       | ");
+			System.out.println("=============================================== ");
+			
+			System.out.print("\nPlease make a selection: ");
+			selection =sc.nextInt();
+
+			switch (selection){
+		 	case 1:
+				System.out.print("\nEnter Customer Id:");
+				String Id = String.valueOf(sc.nextInt());
+		 		custDetails(Id);
+		 		managerMenu();
+		 		break;
+		 	case 2:
+		 		System.out.println("\nEnter Customer id: " );
+		 		String id = String.valueOf(sc.nextInt());
+		 		custSubsDetails(id);
+		 		managerMenu();
+		 		break;
+		 	case 3:
+		 		mainMenu();
+		 		break;
+		 	default:
+				System.out.println("\nInvalid Input!");
+				managerMenu();
+			}
+			
+		}
+		
+		//==============================================admin menu==========================================================
+		
+		public void adminMenu() {
+			
+			int selection;
+
+			System.out.println("\n==================Admin Menu====================");
+			System.out.println("=============================================== ");
+			System.out.println("|             1.Add new plan                   |");
+			System.out.println("|             2.Update plan                    | ");
+			System.out.println("|             3.Remove plan                    | ");
+			System.out.println("|             4.Exit                           | ");
+			System.out.println("=============================================== ");
+				
+				
+				System.out.print("Please make a selection: ");
+				selection =sc.nextInt();
+			
+				 switch (selection){
+				 	case 1:
+				 		addPlan();
+				 		break;
+				 	case 2:
+				 		planList();
+						System.out.print("Enter Plan Id that you wanted to update: ");
+						int pId = sc.nextInt();
+				 		updatePlan(pId);
+				 		break;
+				 	case 3:
+				 		removePlan();
+				 		break;
+				 	case 4:
+				 		mainMenu();
+				 		break;
+				 		
+				 	default:
+						System.out.println("Invalid Input!");
+						
+				 }
+				 adminMenu();
+				 
+		}
 	
 	//================================Customer Management Portal======================================
 	
 	public void customerMenu(String Id)
 	{
-		Scanner sc = new Scanner(System.in);
 		int selection;
+		System.out.println("\n==================User Menu====================");
 		System.out.println("=============================================== ");
 		System.out.println("|             1.View details                    |");
-		System.out.println("|             2.Portal                          | ");
-		System.out.println("|             3.Subscribed plan                 | ");
-		System.out.println("|             4.Unsubscribe plan                | ");
-		System.out.println("|             5.Change plan                     | ");
-		System.out.println("|             6.Back to main menu               | ");
+		System.out.println("|             2.Update details                  |");
+		System.out.println("|             3.Portal                          | ");
+		System.out.println("|             4.Subscribed plan                 | ");
+		System.out.println("|             5.Unsubscribe plan                | ");
+		System.out.println("|             6.Change plan                     | ");
+		System.out.println("|             7.Back to main menu               | ");
 		System.out.println("=============================================== ");
 			
 			System.out.print("Please make a selection: ");
@@ -99,26 +173,30 @@ public class Tester {
 			 		custDetails(Id);
 			 		break;
 			 	case 2:
-			 		portalView(Id);
-			 		customerMenu(Id);
+			 		updateCustDetails(Id);
 			 		break;
 			 	case 3:
-//			 		viewSubs();
+			 		portalView(Id);
 			 		break;
 			 	case 4:
-//			 		unSubs();
+			 		custSubsDetails(Id);
 			 		break;
 			 	case 5:
-			 		changePlan(Id);
+			 		unSubs(Id);
 			 		break;
 			 	case 6:
+			 		changePlan(Id);
+			 		break;
+			 	case 7:
 			 		mainMenu();
 			 		break;
 			 		
 			 	default:
 					System.out.println("Invalid Input!");
+					
 		}
 		customerMenu(Id);
+		
 
 	}
 	
@@ -126,33 +204,19 @@ public class Tester {
 	
 	public void UserRegistration(){
 			
-		Scanner sc = new Scanner(System.in);
-		System.out.println("====== Enter Your Details ======");
-			System.out.print("Name: ");
-			String name= sc.nextLine();
-			
-			System.out.print("Address: ");
-			String address= sc.nextLine();
-			
-			System.out.print("Email: ");
-			String email= sc.nextLine();
-			
-			System.out.print("Contact Number: ");
-			String contactNum= sc.nextLine();
+		String[] cust = customerInput();//return values keyed in by user
 					
-			String id=  String.valueOf(Tester.getRandomIntegerBetweenRange(1,1000));
+		String id=  String.valueOf(Tester.getRandomIntegerBetweenRange(1,1000));
 			
-			Customer c= new Customer(id,name,address,email,contactNum);
+		Customer c= new Customer(id,cust[0],cust[1],cust[2],cust[3]);
 			
-			System.out.println("Register successfully !!! ");
-			System.out.println("Your registerID is " + id);
-			System.out.println("Please set a password to your account.");
-			System.out.println("\n");
+		System.out.println("Register successfully !!! ");
+		System.out.println("Your registerID is " + id);
+		System.out.println("Please set a password to your account.");
+		System.out.println("\n");
 			
-			password(c);
-			mainMenu();
-			
-		}
+		password(c);			
+	}
 	
 	//=====================================random number generator====================================
 	
@@ -165,102 +229,76 @@ public class Tester {
 	
 	public void login(){
 		
-		Scanner sc = new Scanner(System.in);
+		sc.nextLine();
 		ArrayList<Login> loglist=new ArrayList<Login>();
 		loglist = daol.fetchLogin();
 
 		System.out.println("Enter Your Registration ID: ");
 		String id = String.valueOf(sc.nextLine());
+		boolean invalid = true;
 		for(Login l:loglist) {
-			System.out.println("inside loop");
 			if(id.equals(l.getLogId())) {
-				System.out.println("Enter Your Password: ");
-				String password = sc.nextLine();
-				if(password.equals(l.getPassword())) {
-					break;
-					
-				}else {
-					System.out.println("Invalid password! ");
-				}
-				
+				do {
+					System.out.println("\nEnter Your Password: ");
+					String password = sc.nextLine();
+					if(password.equals(l.getPassword())) {
+						if(l.getLogId().equals("Manager")) {
+							System.out.println("\nYou have logged in as Relationship Manager");
+							managerMenu();
+							invalid = false;
+						}
+						else if(l.getLogId().equals("Admin")) {
+							System.out.println("\nYou have logged in as Admin");
+							adminMenu();
+							invalid = false;
+						}
+						else if(l.getLogId().equals("Operator")) {
+							System.out.println("\nYou have logged in as Company Operator");
+							removeCust();
+							invalid = false;
+						}
+						else {
+							customerMenu(id);
+							invalid = false;
+						}
+						
+					}else {
+						System.out.println("Invalid password! ");
+					}
+				}while(invalid);
 			}
 		}
-		customerMenu(id);
+		System.out.println("No user id found. Register first.");
 		
 	}
 	
-//	public void Login(){
-//
-//		Scanner s = new Scanner(System.in);
-//		System.out.println("\n        Login Page");
-//		System.out.println("===============================");
-//
-//		System.out.println (" Enter your User ID : ");
-//		String id = s.next();
-//		LoginDAO cred=new LoginDAO();
-//		//create new array list that stored all login table data
-//		ArrayList<Login> viewlog = new ArrayList<Login>();
-//		viewlog = cred.fetchLogin(id);
-//			for (Login L :viewlog){ //iterate data in table
-//				if(id.equals(L.getLogId())){ // check if entered id is matched with current id in table
-//					
-//					System.out.println(" Enter your password :");
-//					String password = s.next();
-//					
-//					if (password.equals(L.getPassword())) {// check if password entered is matching with the stored password
-//						System.out.println("Login Successful !");
-//						
-//						CustomerDAO cred1=new CustomerDAO();
-//						ArrayList<Customer> viewcred = new ArrayList<Customer>();
-//						viewcred = cred1.fetchCustomer(id);
-//						
-//						for (Customer C :viewcred){
-//							System.out.println("ID:"+C.getRegId()+"\n"+ "Name:"+C.getName()+"\n"+"Address:"+ C.getAddress()+"\n"+"Email ID:"+ C.getEmail()+"\n"+"Contact Number:"+C.getContactNo());
-//						}
-//						customerMenu(id);// go to customer menu
-//
-//					}
-//					else{
-//						System.out.println("Invalid password");
-//						Login();
-//					}
-//				}
-//				else
-//				{
-//					System.out.println("No User found with this ID");
-//					mainMenu();
-//				}
-//			}
-//			
-//	}
 	
 	//=====================================Enter password============================================
 	
 	public void password(Customer c){
 		String pwd,pwd1;
 		int i=1;
+		
 		do{
-		Scanner x=new Scanner(System.in);
-		System.out.print("Password: ");
-		pwd= x.nextLine();
+			System.out.print("Password: ");
+			pwd= sc.nextLine();
 			
-		System.out.print("Confirm Password: ");
-		pwd1= x.nextLine();
+			System.out.print("Confirm Password: ");
+			pwd1= sc.nextLine();
 		
-		if(!pwd.equals(pwd1)){
-			System.out.println("The password is not match.");
-			System.out.println("Please enter the password again.");
-			System.out.println("\n");
-		}
+			if(!pwd.equals(pwd1)){
+				System.out.println("The password is not match.");
+				System.out.println("Please enter the password again.");
+				System.out.println("\n");
+			}
 		
-		}while (!pwd.equals(pwd1));				
-		{	
-			Login l = new Login(c.getRegId(),pwd);
-			daol.addLogin(l);
-			daoc.addCustomer(c);
-			System.out.println("The registration is successfully complete!!");
-			System.out.println("\n");
-		}
+		}while (!pwd.equals(pwd1));		
+		
+		Login l = new Login(c.getRegId(),pwd);
+		daol.addLogin(l);
+		daoc.addCustomer(c);
+		System.out.println("The registration is successfully complete!!");
+		System.out.println("\n");
 			
 	}
 	
@@ -268,44 +306,50 @@ public class Tester {
 	
 	public void portalView(String Id) {
 		
-		Scanner sc = new Scanner(System.in);
 		System.out.println("List of plan available in Dispur Wireless:");
 		planList();// call method to view plan list
-		
+		int ans;
 		// check if user is logged in or not
 		 if(Id != null) {
-			 System.out.println("Do you want to subscribe to a plan?");
-			 System.out.print("1-Yes || 2-No : ");
-			 int ans = sc.nextInt();
+			 do {
+				 System.out.println("Do you want to subscribe to a plan?");
+				 System.out.print("1-Yes || 2-No : ");
+				 ans = sc.nextInt();
+				 
+				 switch (ans){
+				 	case 1:
+				 		subscribe(Id);
+				 		break;
+				 	case 2:
+				 		return;
+				 	default:
+						System.out.println("Invalid Input!");
+				 }
+				
+			}while(ans != 1 & ans!=2);
 			 
-			 switch (ans){
-			 	case 1:
-			 		subscribe(Id);
-			 		break;
-			 	case 2:
-			 		customerMenu(Id);
-			 		break;
-			 	default:
-					System.out.println("Invalid Input!");
-			 }
 		 }else {
-			 
-			 System.out.print("1-Main Menu || 2-Exit : ");
-			 int ans = sc.nextInt();
-			 switch (ans){
-			 	case 1:
-			 		mainMenu();
-			 		break;
-			 	case 2:
-			 		System.out.print("Thank you for using our system");
-			 		break;
-			 	default:
-					System.out.println("Invalid Input!");
-			 }
+			 do {
+				 System.out.print("1-Main Menu || 2-Exit : ");
+				 ans = sc.nextInt();
+				 switch (ans){
+				 	case 1:
+				 		mainMenu();
+				 		break;
+				 	case 2:
+				 		System.out.print("Thank you for using our system");
+				 		System.exit(0);
+				 	default:
+						System.out.println("Invalid Input!");
+				 }
+				
+			}while(ans != 1 & ans!=2);
 			 
 		 }
 		
 	}
+	
+	//============================================Print Customer Details==============================================
 	
 	public void custDetails(String Id) {
 		
@@ -313,21 +357,77 @@ public class Tester {
 		list=daoc.fetchCustomer(Id);
 		for(Customer c : list)
 		{
-			System.out.println("ID:"+c.getRegId()+"\n"+ "Name:"+c.getName()+"\n"+"Address:"+ c.getAddress()+"\n"+"Email ID:"+ c.getEmail()+"\n"+"Contact Number:"+c.getContactNo());
+			System.out.println("\nID:"+c.getRegId()+"\n"+ "Name:"+c.getName()+"\n"+"Address:"+ c.getAddress()+"\n"+"Email ID:"+ c.getEmail()+"\n"+"Contact Number:"+c.getContactNo());
 		}
 		
 	}
 	
+	//=========================================Customer Subscription Details=================================================
+	
+		public void custSubsDetails(String Id) {
+			
+			System.out.println("\n------Current Subscribed Plan------");
+			ArrayList<Plan> slist=new ArrayList<Plan>();
+			slist = daos.fetchSubsById(Id);
+			 for(Plan p : slist)
+			 {
+				 System.out.println("\nPlan ID: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif: "+p.getTariff()+"\n"+"Validity: "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n"); 
+				 System.out.println("-----------------------------------");
+			 }
+			 
+			
+		}
+		
+		//===================================================Unsub Plan==========================================================
+		
+		public void unSubs(String Id) {
+			
+			int ans;
+			System.out.println("List of plan that you currently subscribed in Dispur Wireless:");
+			custSubsDetails(Id);// call method to view current subscribed list
+				 
+			System.out.println("Do you really want to continue unsubscribe your current plan?");
+			System.out.print("1-Yes || 2-No : ");
+			ans = sc.nextInt();
+			 
+			switch (ans){
+				case 1:
+					System.out.println("Enter Plan Id that you want to cancel subscription");
+					ans = sc.nextInt();
+					
+					daos.delPlan(Id,ans);
+					break;
+				case 2:
+					return;
+				default:
+					System.out.println("Invalid Input!");
+			}
+			
+		}
+		
+		//========================================Customer Update Their Details=======================================
+		
+		public void updateCustDetails(String Id) {
+			
+//			System.out.println("Proceed with updating details?");
+//			System.out.print("1-Yes | 2-No : ");
+			String[] cust = customerInput();
+			daoc.updateCustDetails(Id, cust[0], cust[1], cust[2], cust[3]);
+			return;
+			
+		}
+	
+		//=========================================Customer Subscribe to a plan=======================================
+		
 	public void subscribe(String Id) {
 		
 		ArrayList<Plan> list=new ArrayList<Plan>();
 		list=daop.fetchPlan();
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter plan id to view details and subscribe");
-		System.out.print("Plan Id: ");
 		boolean sel = true;
-		do {
+		do {	
 			
+			System.out.println("Enter plan id to view details and subscribe");
+			System.out.print("Plan Id: ");
 			int planId = sc.nextInt();
 			for(Plan p : list)
 			{
@@ -339,7 +439,7 @@ public class Tester {
 					 int select = sc.nextInt();
 					 if(select == 1) {
 						 sel = false;
-						 Subscribe sub = new Subscribe(Tester.getRandomIntegerBetweenRange(1,100),Id,planId,Tester.getRandomIntegerBetweenRange(1,5));
+						 Subscribe sub = new Subscribe(Tester.getRandomIntegerBetweenRange(1,100),Id,planId,Tester.getRandomIntegerBetweenRange(1,10));
 						 daos.addSubs(sub);
 						 break;
 					 }
@@ -351,134 +451,63 @@ public class Tester {
 		customerMenu(Id);
 		
 	}
+	
 	//=================================================Customer Change Plan=================================================
+	
 	public void changePlan(String Id) {
+				
+		System.out.println("Enter plan id: ");
+		int current = sc.nextInt();
+		System.out.println("You want to change to plan : ");
+		int changedId = sc.nextInt();
+		System.out.println("Changing Plan from " +current+ " to "+ changedId +" ?");
+		int ans;
+		do {
+			System.out.println("1-Yes | 2-No");
+			ans = sc.nextInt();
+			switch (ans){
+		 	case 1:
+		 		daos.changeSubs(Id, current, changedId);
+		 		return;
+		 	case 2:
+		 		return;
+		 	default:
+				System.out.println("Invalid Input!");
+			}
 		
-		int current = 94;
-		int changedId = 34;
-		System.out.println("Changing Plan from " +current+ " to "+ changedId);
-		daos.changeSubs(Id, current, changedId);
+		}while(ans != 1 & ans!=2);
 		
 	}
 	
 	
-	//=====================================manager menu=================================================================
-	public void managerMenu() {
-		
-		Scanner sc = new Scanner(System.in);
-		int selection;
-		System.out.println("=============================================== ");
-		System.out.println("|             1.View Customer Details           |");
-		System.out.println("|             2.View Customer Subscribe Details | ");
-		System.out.println("|             3.Exit                            | ");
-		System.out.println("=============================================== ");
-		
-		System.out.print("Please make a selection: ");
-		selection =sc.nextInt();
-
-		switch (selection){
-	 	case 1:
-			System.out.print("Enter number id:");
-			String Id = String.valueOf(sc.nextInt());
-	 		custDetails(Id);
-	 		managerMenu();
-	 		break;
-	 	case 2:
-	 		System.out.print("Work in progress!!");
-	 		break;
-	 	case 3:
-//	 		System.out.print("Thank you for using our system");
-	 		mainMenu();
-	 		break;
-	 		
-	 	default:
-			System.out.println("Invalid Input!");
-		}
-		
-		managerMenu();
-	}
-	
-	//==============================================admin menu==========================================================
-	public void adminMenu() {
-		
-		Scanner sc = new Scanner(System.in);
-		int selection;
-//		boolean loginStatus = false;
-		System.out.println("=============================================== ");
-		System.out.println("|             1.Add new plan                   |");
-		System.out.println("|             2.Update plan                    | ");
-		System.out.println("|             3.Remove plan                    | ");
-		System.out.println("|             4.Remove Customer                | ");
-		System.out.println("|             5.Exit                           | ");
-		System.out.println("=============================================== ");
-			
-			
-			System.out.print("Please make a selection: ");
-			selection =sc.nextInt();
-		
-			 switch (selection){
-			 	case 1:
-			 		addPlan();
-			 		break;
-			 	case 2:
-					System.out.print("Enter Plan Id that you wanted to update: ");
-					int pId = sc.nextInt();
-			 		updatePlan(pId);
-			 		break;
-			 	case 3:
-			 		removePlan();
-			 		break;
-			 	case 4:
-			 		removeCust();
-			 		break;
-			 	case 5:
-			 		mainMenu();
-			 		break;
-			 		
-			 	default:
-					System.out.println("Invalid Input!");
-					adminMenu();
-			 }
-			 
-	}
+	//=================================================Admin Add New Plan=====================================================
 	
 	public void addPlan() {
 		
-		System.out.println("Work in progress!!");
+		System.out.println("Enter Plan Details: ");
+		
+		String[] plan = adminPlanInput();//return details of plan from admin input
+		int Id = Tester.getRandomIntegerBetweenRange(1, 100);
+		Plan pln = new Plan(Id,plan[0],plan[1],Double.parseDouble(plan[2]),Integer.parseInt(plan[3]),plan[4]);
+		daop.addPlan(pln);
 		adminMenu();
 		
 	}
+	
+	//==============================================Admin Update Plan Details=================================================
 	
 	public void updatePlan(int Id) {
 		
-//		System.out.println("Work in progress!!");
-		Scanner sc = new Scanner(System.in);
-		System.out.println("====== Enter Plan Details ======");
-		
-		System.out.print("Name: ");
-		String name= sc.nextLine();
-			
-		System.out.print("Type: ");
-		String type= sc.nextLine();
-			
-		System.out.print("Tariff: ");
-		double tariff= sc.nextDouble();
-			
-		System.out.print("Validity: ");
-		int validity= sc.nextInt();
-		
-		sc.nextLine();
-		System.out.print("Rental: ");
-		String rental= sc.nextLine();
-		
-		daop.updatePlan(Id, name, type, tariff, validity, rental);
+		String[] plan = adminPlanInput();
+		daop.updatePlan(Id, plan[0], plan[1], Double.parseDouble(plan[2]), Integer.parseInt(plan[3]), plan[4]);
 		adminMenu();
 		
 	}
 	
+	//==============================================Admin Remove Plan========================================================
+	
 	public void removePlan() {
 		
-		Scanner sc = new Scanner(System.in);
 		System.out.print("Insert Plan id you want to delete: ");
 		int pid =sc.nextInt();
 		daop.deletePlan(pid);
@@ -486,26 +515,92 @@ public class Tester {
 		
 	}
 	
+	//==============================================Admin Remove Customer======================================================
+	
 	public void removeCust() {
 		
-		Scanner sc = new Scanner(System.in);
 		System.out.print("Insert Customer id you want to delete: ");
 		String id =sc.nextLine();
 		daoc.delCustomer(id);
-		adminMenu();
+		mainMenu();
 		
 	}
 
 	
 	//============================================Method to view plan list==================================================
+	
 	public void planList(){
 		
 		ArrayList<Plan> list=new ArrayList<Plan>();
 		list=daop.fetchPlan();
 		 for(Plan p : list)
 		 {
-			 System.out.println("Plan Id: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif: "+p.getTariff()+"\n"+"Validity: "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n\n");
+			 System.out.println("\nPlan Id: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif: "+p.getTariff()+"\n"+"Validity: "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n");
 		 }
 		
 	}
+	
+	//===========================Method for accepting Customer registration and Update input===========================
+	
+	public String[] customerInput() {
+		
+		String[] cust = new String[4];
+		
+		sc.nextLine();
+		System.out.println("====== Enter Your Details ======");
+		System.out.print("Name: ");
+		String name= sc.nextLine();
+		cust[0] = name;
+		
+		System.out.print("Address: ");
+		String address= sc.nextLine();
+		cust[1] = address;
+		
+		System.out.print("Email: ");
+		String email= sc.nextLine();
+		cust[2] = email;
+		
+		System.out.print("Contact Number: ");
+		String contactNum= sc.nextLine();
+		cust[3] = contactNum;
+		
+		return cust;
+		
+	}
+	
+	//==================================Method for accepting Admin Add and Update Plan===============================
+	
+	public String[] adminPlanInput() {
+		
+		String[] pln = new String[5];
+		System.out.println("====== Enter Plan Details ======");
+		sc.nextLine();
+		System.out.print("Name: ");
+		String plnName= sc.nextLine();
+		pln[0] = plnName;
+		
+		System.out.print("Type: ");
+		String type= sc.nextLine();
+		pln[1] = type;
+		
+		System.out.print("Tariff: ");
+		String tariff= String.valueOf(sc.nextDouble());
+		pln[2] = tariff;
+			
+		System.out.print("Validity: ");
+		String validity= String.valueOf(sc.nextInt());
+		pln[3] = validity;
+		
+		sc.nextLine();
+		System.out.print("Rental: ");
+		String rental= sc.nextLine();
+		pln[4] = rental;
+		
+		return pln;
+		
+	}
+	
+//	public void checkDuration() {
+//		
+//	}
 }

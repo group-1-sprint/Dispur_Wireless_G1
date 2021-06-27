@@ -81,17 +81,21 @@ public class CustomerDAO {
 			return list;
 		}
 	
-	//========================================Update customer==========================================
+	//========================================Update customer Details==========================================
 	
-	public int updateCustName(String id,String name)
+	public int updateCustDetails(String id,String name, String address, String email, String contactNo)
 	{
 		int res=0;
 		con=DBUtil.getConnection();
 		try {
-			ps=con.prepareStatement("update Customer set name=? where regId=?");
+			ps=con.prepareStatement("update Customer set name=?,address=?,email=?,contactNo=? where regId=?");
 			ps.setString(1, name);
-			ps.setString(2, id);
+			ps.setString(2, address);
+			ps.setString(3, email);
+			ps.setString(4, contactNo);
+			ps.setString(5, id);
 			res=ps.executeUpdate();  //return int (rows affected)
+			System.out.println("Update details successfully!");
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -108,22 +112,62 @@ public class CustomerDAO {
 	
 	//====================================Admin Delete Customer Details=====================================================
 	
-	public ArrayList<Customer> delCustomer(String CustId)
+//	public ArrayList<Customer> delCustomer(String CustId)
+//	{
+//		int rows = 0;
+//		ArrayList<Customer> list=new ArrayList<Customer>();
+//		con=DBUtil.getConnection();
+//		try {
+//			ps=con.prepareStatement("delete from Subscription where planId=?");
+//			ps.setString(1, CustId);
+//			rows=ps.executeUpdate(); //dml insert,delete ,update
+//			
+//			ps=con.prepareStatement("DELETE FROM Customer where regId=?");
+//			ps.setString(1, CustId);
+//			System.out.println("Successfully delete customer with id "+ CustId);
+//			rs=ps.executeQuery();  //delete
+//			
+//			ps=con.prepareStatement("delete from Login where logId=?");
+//			ps.setString(1, CustId);
+//			rows=ps.executeUpdate(); //dml insert,delete ,update
+//			
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return list;
+//	}
+	
+	public int delCustomer(String CustId)
 	{
-		
-		ArrayList<Customer> list=new ArrayList<Customer>();
+		int rows=0;
 		con=DBUtil.getConnection();
 		try {
+			ps=con.prepareStatement("delete from Subscription where custId=?");
+			ps.setString(1, CustId);
+			rows=ps.executeUpdate(); //dml insert,delete ,update
+			
 			ps=con.prepareStatement("DELETE FROM Customer where regId=?");
 			ps.setString(1, CustId);
+			rows=ps.executeUpdate();  //delete
+			
+			ps=con.prepareStatement("delete from Login where logId=?");
+			ps.setString(1, CustId);
+			rows=ps.executeUpdate(); //dml insert,delete ,update
+			
 			System.out.println("Successfully delete customer with id "+ CustId);
-			rs=ps.executeQuery();  //delete
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return list;
+		finally
+		{
+			DBUtil.closeConnection(con);
+		}
+		
+		return rows;
+		
 	}
 
 }
