@@ -130,23 +130,38 @@ public class SubscribeDAO {
 			return row;
 		}
 		
-//		//==========================================Delete Subscription==============================================
-//		
-//		public int delSub(String CustId)
-//		{
-//			int row = 0;
-//			con=DBUtil.getConnection();
-//			try {
-//				ps=con.prepareStatement("DELETE FROM Subscription where regId=?");
-//				ps.setString(1, CustId);
-//				row=ps.executeUpdate();  //delete
-//				
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			return row;
-//		}
+		//============================fetch customer subscribed plan id=============================================
+		
+		public ArrayList<Subscribe> fetchSubsBycustId(String cId, int pId)
+		{
+			
+			ArrayList<Subscribe> sublist=new ArrayList<Subscribe>();
+			con=DBUtil.getConnection();
+			try {
+				ps=con.prepareStatement("select * from Subscription where custId=? and planId=?");
+				
+				ps.setString(1, cId);
+				ps.setInt(2, pId);
+				rs=ps.executeQuery(); 
+				while(rs.next())
+				{
+					int subId= rs.getInt(1);
+					String custId= rs.getString(2);
+					int planId = rs.getInt(3);
+					int duration= rs.getInt(4);
+					
+					Subscribe s=new Subscribe(subId,custId,planId,duration);
+					sublist.add(s);
+					
+				}
+				
+				
+			} catch (SQLException s) {
+				// TODO Auto-generated catch block
+				s.printStackTrace();
+			}
+			return sublist;
+		}
 		
 		
 

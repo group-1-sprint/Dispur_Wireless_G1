@@ -112,10 +112,11 @@ public class Tester {
 
 			System.out.println("\n==================Admin Menu====================");
 			System.out.println("=============================================== ");
-			System.out.println("|             1.Add new plan                   |");
-			System.out.println("|             2.Update plan                    | ");
-			System.out.println("|             3.Remove plan                    | ");
-			System.out.println("|             4.Exit                           | ");
+			System.out.println("|             1.View Plan                      |");
+			System.out.println("|             2.Add new plan                   |");
+			System.out.println("|             3.Update plan                    | ");
+			System.out.println("|             4.Remove plan                    | ");
+			System.out.println("|             5.Exit                           | ");
 			System.out.println("=============================================== ");
 				
 				
@@ -124,18 +125,21 @@ public class Tester {
 			
 				 switch (selection){
 				 	case 1:
-				 		addPlan(); // method for admin to add new plan
+				 		viewPlan(); // method for admin to view existing plan
 				 		break;
 				 	case 2:
+				 		addPlan(); // method for admin to add new plan
+				 		break;
+				 	case 3:
 				 		planList();
 						System.out.print("Enter Plan Id that you wanted to update: ");
 						int pId = sc.nextInt();
 				 		updatePlan(pId); // method for admin to update plan details
 				 		break;
-				 	case 3:
+				 	case 4:
 				 		removePlan(); //method for admin to remove plan
 				 		break;
-				 	case 4:
+				 	case 5:
 				 		mainMenu(); //go back to main menu
 				 		break;
 				 		
@@ -156,7 +160,7 @@ public class Tester {
 		System.out.println("=============================================== ");
 		System.out.println("|             1.View details                    |");
 		System.out.println("|             2.Update details                  |");
-		System.out.println("|             3.Portal                          | ");
+		System.out.println("|             3.View Plan                       | ");
 		System.out.println("|             4.Subscribed plan                 | ");
 		System.out.println("|             5.Unsubscribe plan                | ");
 		System.out.println("|             6.Change plan                     | ");
@@ -356,7 +360,7 @@ public class Tester {
 		list=daoc.fetchCustomer(Id);
 		
 		if(list.isEmpty()) {// check if the id contain data in the database or not
-			System.out.println("There's no Id " + Id + " in the database");
+			System.out.println("\nThere's no customer with Id " + Id + " registered.");
 		}
 		else {
 			for(Customer c : list)
@@ -373,7 +377,7 @@ public class Tester {
 			ArrayList<Plan> slist=new ArrayList<Plan>();
 			slist = daos.fetchSubsById(Id);
 			if(slist.isEmpty()) {
-				System.out.println("There's no Id " + Id + " in the database");
+				System.out.println("\nCustomer with Id " + Id + " does not subscribe to any plan yet.");
 			}
 			else {
 				System.out.println("\n------Current Subscribed Plan------");
@@ -432,35 +436,49 @@ public class Tester {
 		list=daop.fetchPlan(); // fetch list of plan from the database
 		boolean sel = true;
 		do {	
-			
 			System.out.println("Enter plan id to view details and subscribe");
 			System.out.print("Plan Id: ");
 			int planId = sc.nextInt();
+			int count = 0;
 			for(Plan p : list)
-			{
+			{	
 				 if(planId == p.getPlanId()) {
-					 // display details of selected plan
-					 System.out.println("Plan Id: "+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+"\n"+"Validity: "+p.getValidity()+"\n");
-					 System.out.println("Amount is RM "+p.getTariff() + "/min");// display tariff
-					 System.out.println("Proceed with Subscription?");
-					 System.out.println("1.Yes"+"\n"+"2.No");
-					 int select = sc.nextInt();
-					 if(select == 1) {
-						 sel = false;
-						 Subscribe sub = new Subscribe(Tester.getRandomIntegerBetweenRange(1,100),Id,planId,Tester.getRandomIntegerBetweenRange(1,10));
-						 daos.addSubs(sub);
-						 break;
-					 }else if(select == 2) {
-						 System.out.println("\nCancel subscription");
+					 boolean check = checkIdInSub(Id,planId);// check if plan already subscribed or not
+					 if(check) {
+						 System.out.println("You have subscribed to this plan");
 						 sel = false;
 						 break;
 					 }else {
-						 System.out.println("\nInvalid input");
+						 
+						// display details of selected plan
+						 System.out.println("Plan Id: "+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+"\n"+"Validity: "+p.getValidity()+"\n");
+						 System.out.println("Amount is RM "+p.getTariff() + "/min");// display tariff
+						 int select;
+						 do {
+							 System.out.println("Proceed with Subscription?");
+							 System.out.println("1.Yes"+"\n"+"2.No");
+							 select = sc.nextInt();
+							 if(select == 1) {
+								 sel = false;
+								 Subscribe sub = new Subscribe(Tester.getRandomIntegerBetweenRange(1,100),Id,planId,Tester.getRandomIntegerBetweenRange(1,10));
+								 daos.addSubs(sub);
+								 return;
+							 }else if(select == 2) {
+								 System.out.println("\nCancel subscription");
+								 sel = false;
+								 break;
+							 }else {
+								 System.out.println("\nInvalid input");
+							 }
+						 }while(select != 1 & select!=2);
+						 
 					 }
-					 
-				 }
+				 }count ++;
 			}
-			
+			if(count == list.size()) {
+				System.out.println("There is no plan with Id "+ planId);
+			}
+
 		}while(sel);
 		
 		customerMenu(Id);// return to customer menu
@@ -473,7 +491,7 @@ public class Tester {
 				
 		System.out.println("Enter plan id: ");
 		int current = sc.nextInt();
-		System.out.println("You want to change to plan : ");
+		System.out.println("Enter plan id you want to change to : ");
 		int changedId = sc.nextInt();
 		System.out.println("Changing Plan from " +current+ " to "+ changedId +" ?");
 		int ans;
@@ -516,9 +534,16 @@ public class Tester {
 	
 	public void updatePlan(int Id) {
 		
-		String[] plan = adminPlanInput();// method to call admin input
-		//pass received input from admit to the database
-		daop.updatePlan(Id, plan[0], plan[1], Double.parseDouble(plan[2]), Integer.parseInt(plan[3]), plan[4]);
+		boolean exist = checkIdPlan(Id);
+		if(exist) {
+			String[] plan = adminPlanInput();// method to call admin input
+			//pass received input from admit to the database
+			daop.updatePlan(Id, plan[0], plan[1], Double.parseDouble(plan[2]), Integer.parseInt(plan[3]), plan[4]);
+		}
+		else {
+			System.out.println("Plan with Id "+Id+" does not exist");
+		}
+		
 		adminMenu(); // return to admin menu
 		
 	}
@@ -527,9 +552,27 @@ public class Tester {
 	
 	public void removePlan() {
 		
+		planList();
 		System.out.print("Insert Plan id you want to delete: ");
 		int pid =sc.nextInt();// accept id that wanted to delete
-		daop.deletePlan(pid);// delete the table content with that id from the database
+		int ans;
+		do {
+			System.out.println("Do you really want to remove Plan with id " +pid+" ?");
+			System.out.print("1-Yes || 2-No : ");
+			ans = sc.nextInt();
+			switch (ans){
+				case 1:
+					daop.deletePlan(pid);// delete the table content with that id from the database
+					break;
+				case 2:
+					return;
+				default:
+					System.out.println("Invalid Input!");
+			}
+			
+		}while(ans != 1 & ans != 2);
+		
+		
 		adminMenu();// return to admin menu
 		
 	}
@@ -539,7 +582,7 @@ public class Tester {
 	public void removeCust() {
 		
 		System.out.println("Insert Customer id you want to delete: ");
-		String id =sc.nextLine();		
+		String id =sc.nextLine();
 		custDetails(id); // view customer details
 		int ans;
 		do {
@@ -641,5 +684,54 @@ public class Tester {
 		return pln;
 		
 	}
+	
+	//=================================================Admin View Plan=====================================================
+		public void viewPlan(){
+			
+			System.out.println("List of plan available in Dispur Wireless: ");
+			planList();
+			
+		}
+		
+	//============================================Check if plan id exist or not=========================================
+		
+		public boolean checkIdPlan(int Id) {
+			boolean exist = false;
+			ArrayList<Plan> pList = new ArrayList<Plan>();
+			pList = daop.fetchPlan();
+			for(Plan p:pList) {
+				if(Id == p.getPlanId()) {
+					exist =true;
+				}
+			}
+			return exist;
+		}
+		
+	//===============================================Check id exist or not============================================
+		
+		public boolean checkIdCust(String Id) {
+			boolean exist = false;
+			ArrayList<Customer> cList = new ArrayList<Customer>();
+			cList = daoc.fetchCustomer(Id);
+			for(Customer c:cList) {
+				if(Id == c.getRegId()) {
+					exist =true;
+				}
+			}
+			return exist;
+		}	
 
+		public boolean checkIdInSub(String Id,int planId) {
+			
+			boolean sel = false;
+			ArrayList<Subscribe> slist=new ArrayList<Subscribe>();
+			slist = daos.fetchSubsBycustId(Id, planId);
+			for(Subscribe s:slist) {
+				if(planId == s.getPlanId()) {
+					sel = true;
+					break;
+				}
+			}
+			return sel;
+		}
 }

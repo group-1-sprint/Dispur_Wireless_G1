@@ -62,8 +62,9 @@ select * from Plan;
 select * from Subscription;
 
 --join plan and customer table with subscribe table
-select Subscription.subId, Customer.regId, Customer.name, Subscription.planId, Plan.planName, Plan.planType, Plan.tariff, Plan.validity, Plan.rental, Subscription.duration from ((Subscription join Plan on Subscription.planId=Plan.planId) join Customer on Subscription.custId = Customer.regId) where Customer.regId=316;
+select Subscription.subId, Customer.regId, Customer.name, Subscription.planId, Plan.planName, Plan.planType, Plan.tariff, Plan.validity, Plan.rental, Subscription.duration from ((Subscription join Plan on Subscription.planId=Plan.planId) join Customer on Subscription.custId = Customer.regId);
 select Subscription.planId, Plan.planName, Plan.planType, Plan.tariff, Plan.validity, Plan.rental from Subscription join Plan on Subscription.planId=Plan.planId where Subscription.custId=316;
+select planId from Subscription where custId = 825;
 
 --drop table Login;
 --drop table Customer;

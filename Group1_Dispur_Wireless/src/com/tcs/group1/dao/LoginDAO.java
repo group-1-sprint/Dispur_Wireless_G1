@@ -70,7 +70,5 @@ public class LoginDAO {
 		}
 		return loglist;
 	}
-		
-		
 
 }
