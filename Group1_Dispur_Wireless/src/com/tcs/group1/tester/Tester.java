@@ -34,7 +34,7 @@ public class Tester {
 	public void mainMenu() {
 		
 		int selection;
-		String Id = null;
+		String Id = null;//to indicate that user did not login yet
 		
 		System.out.println("\n==================Main Menu====================");
 		System.out.println("=============================================== ");
@@ -49,17 +49,17 @@ public class Tester {
 	
 		 switch (selection){
 		 	case 1:
-		 		UserRegistration();		 		
+		 		UserRegistration();// go to registration method		 		
 		 		break;
 		 	case 2:
-		 		login();
+		 		login(); // go to login method
 		 		break;
 		 	case 3:
-		 		portalView(Id);
+		 		portalView(Id); // view plan without login
 		 		break;
 		 	case 4:
 		 		System.out.print("\nThank you for using our system");
-		 		System.exit(0);
+		 		System.exit(0); // terminate the program
 		 		
 		 	default:
 				System.out.println("Invalid Input!");
@@ -87,23 +87,21 @@ public class Tester {
 		 	case 1:
 				System.out.print("\nEnter Customer Id:");
 				String Id = String.valueOf(sc.nextInt());
-		 		custDetails(Id);
-		 		managerMenu();
+		 		custDetails(Id); // method to view customer details based on id
 		 		break;
 		 	case 2:
 		 		System.out.println("\nEnter Customer id: " );
 		 		String id = String.valueOf(sc.nextInt());
-		 		custSubsDetails(id);
-		 		managerMenu();
+		 		custSubsDetails(id); // method to view customer subscribed details
 		 		break;
 		 	case 3:
-		 		mainMenu();
+		 		mainMenu(); // go back to main menu
 		 		break;
 		 	default:
 				System.out.println("\nInvalid Input!");
-				managerMenu();
+				
 			}
-			
+			managerMenu(); //will go too manager menu after perform tasks or invalid selection
 		}
 		
 		//==============================================admin menu==========================================================
@@ -126,26 +124,26 @@ public class Tester {
 			
 				 switch (selection){
 				 	case 1:
-				 		addPlan();
+				 		addPlan(); // method for admin to add new plan
 				 		break;
 				 	case 2:
 				 		planList();
 						System.out.print("Enter Plan Id that you wanted to update: ");
 						int pId = sc.nextInt();
-				 		updatePlan(pId);
+				 		updatePlan(pId); // method for admin to update plan details
 				 		break;
 				 	case 3:
-				 		removePlan();
+				 		removePlan(); //method for admin to remove plan
 				 		break;
 				 	case 4:
-				 		mainMenu();
+				 		mainMenu(); //go back to main menu
 				 		break;
 				 		
 				 	default:
 						System.out.println("Invalid Input!");
 						
 				 }
-				 adminMenu();
+				 adminMenu(); // go back to admin page after performing tasks
 				 
 		}
 	
@@ -170,32 +168,32 @@ public class Tester {
 		
 			 switch (selection){
 			 	case 1:
-			 		custDetails(Id);
+			 		custDetails(Id); // method for customer to view their details
 			 		break;
 			 	case 2:
-			 		updateCustDetails(Id);
+			 		updateCustDetails(Id); // method for customer to update their details
 			 		break;
 			 	case 3:
-			 		portalView(Id);
+			 		portalView(Id); // method for customer to view and subscribe plan
 			 		break;
 			 	case 4:
-			 		custSubsDetails(Id);
+			 		custSubsDetails(Id); // method for customer to view all the subscribed details
 			 		break;
 			 	case 5:
-			 		unSubs(Id);
+			 		unSubs(Id); // method for customer to unsubscribe to any of the plan
 			 		break;
 			 	case 6:
-			 		changePlan(Id);
+			 		changePlan(Id); // method for customer to change their subscribed plan
 			 		break;
 			 	case 7:
-			 		mainMenu();
+			 		mainMenu(); // go back to main menu
 			 		break;
 			 		
 			 	default:
 					System.out.println("Invalid Input!");
 					
 		}
-		customerMenu(Id);
+		customerMenu(Id); //go back to customer page after performing tasks
 		
 
 	}
@@ -206,79 +204,80 @@ public class Tester {
 			
 		String[] cust = customerInput();//return values keyed in by user
 					
-		String id=  String.valueOf(Tester.getRandomIntegerBetweenRange(1,1000));
+		String id=  String.valueOf(Tester.getRandomIntegerBetweenRange(1,1000));// generate random id number
 			
-		Customer c= new Customer(id,cust[0],cust[1],cust[2],cust[3]);
+		Customer c= new Customer(id,cust[0],cust[1],cust[2],cust[3]);// create new customer object
 			
 		System.out.println("Register successfully !!! ");
 		System.out.println("Your registerID is " + id);
-		System.out.println("Please set a password to your account.");
-		System.out.println("\n");
-			
-		password(c);			
+		System.out.println("Please set a password to your account.\n");
+					
+		password(c);// go to password setting page			
 	}
 	
 	//=====================================random number generator====================================
 	
 	public static int getRandomIntegerBetweenRange(int min, int max){
-	    int x = (int)(Math.random()*((max-min)+1))+min;
+	    int x = (int)(Math.random()*((max-min)+1))+min;// generate random number
 	    return x;
 	}
 	
 	//=========================================User Login============================================
 	
-	public void login(){
+	public void login(){ // method for login
 		
 		sc.nextLine();
 		ArrayList<Login> loglist=new ArrayList<Login>();
-		loglist = daol.fetchLogin();
+		loglist = daol.fetchLogin(); // fetch id and password from login table
 
 		System.out.println("Enter Your Registration ID: ");
 		String id = String.valueOf(sc.nextLine());
 		boolean invalid = true;
 		for(Login l:loglist) {
-			if(id.equals(l.getLogId())) {
+			if(id.equals(l.getLogId())) { // check if entered id is matched with one of the id in login table
 				do {
 					System.out.println("\nEnter Your Password: ");
 					String password = sc.nextLine();
-					if(password.equals(l.getPassword())) {
-						if(l.getLogId().equals("Manager")) {
+					if(password.equals(l.getPassword())) {// check if entered password is matching or not
+						if(l.getLogId().equals("Manager")) { // if id is manager, go to manager page
 							System.out.println("\nYou have logged in as Relationship Manager");
 							managerMenu();
 							invalid = false;
 						}
-						else if(l.getLogId().equals("Admin")) {
+						else if(l.getLogId().equals("Admin")) {// if id is admin, go to admin page
 							System.out.println("\nYou have logged in as Admin");
 							adminMenu();
 							invalid = false;
 						}
-						else if(l.getLogId().equals("Operator")) {
+						else if(l.getLogId().equals("Operator")) {// if id is operator, go to operator page
 							System.out.println("\nYou have logged in as Company Operator");
 							removeCust();
 							invalid = false;
 						}
 						else {
-							customerMenu(id);
+							customerMenu(id);// go to customer page
 							invalid = false;
 						}
 						
 					}else {
 						System.out.println("Invalid password! ");
 					}
-				}while(invalid);
+				}while(invalid);// if password is invalid, ask user to re-enter password 
 			}
 		}
 		System.out.println("No user id found. Register first.");
+		//if no user id found, go back to main menu
 		
 	}
 	
 	
 	//=====================================Enter password============================================
 	
-	public void password(Customer c){
+	public void password(Customer c){ // method to set user password
 		String pwd,pwd1;
 		int i=1;
 		
+		// ask user to enter password and confirm it. loop until password matched
 		do{
 			System.out.print("Password: ");
 			pwd= sc.nextLine();
@@ -294,9 +293,9 @@ public class Tester {
 		
 		}while (!pwd.equals(pwd1));		
 		
-		Login l = new Login(c.getRegId(),pwd);
-		daol.addLogin(l);
-		daoc.addCustomer(c);
+		Login l = new Login(c.getRegId(),pwd); // create new login object
+		daol.addLogin(l); // add login data into login table
+		daoc.addCustomer(c); // add customer data into customer table
 		System.out.println("The registration is successfully complete!!");
 		System.out.println("\n");
 			
@@ -353,29 +352,38 @@ public class Tester {
 	
 	public void custDetails(String Id) {
 		
-		ArrayList<Customer> list=new ArrayList<Customer>();
+		ArrayList<Customer> list=new ArrayList<Customer>();// fetch customer details from db
 		list=daoc.fetchCustomer(Id);
-		for(Customer c : list)
-		{
-			System.out.println("\nID:"+c.getRegId()+"\n"+ "Name:"+c.getName()+"\n"+"Address:"+ c.getAddress()+"\n"+"Email ID:"+ c.getEmail()+"\n"+"Contact Number:"+c.getContactNo());
-		}
 		
+		if(list.isEmpty()) {// check if the id contain data in the database or not
+			System.out.println("There's no Id " + Id + " in the database");
+		}
+		else {
+			for(Customer c : list)
+			{
+				System.out.println("\nID:"+c.getRegId()+"\n"+ "Name:"+c.getName()+"\n"+"Address:"+ c.getAddress()+"\n"+"Email ID:"+ c.getEmail()+"\n"+"Contact Number:"+c.getContactNo());
+			}
+		}
 	}
 	
 	//=========================================Customer Subscription Details=================================================
 	
 		public void custSubsDetails(String Id) {
 			
-			System.out.println("\n------Current Subscribed Plan------");
 			ArrayList<Plan> slist=new ArrayList<Plan>();
 			slist = daos.fetchSubsById(Id);
-			 for(Plan p : slist)
-			 {
-				 System.out.println("\nPlan ID: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif: "+p.getTariff()+"\n"+"Validity: "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n"); 
-				 System.out.println("-----------------------------------");
-			 }
-			 
-			
+			if(slist.isEmpty()) {
+				System.out.println("There's no Id " + Id + " in the database");
+			}
+			else {
+				System.out.println("\n------Current Subscribed Plan------");
+				for(Plan p : slist)
+				{
+					 System.out.println("\nPlan ID: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif: "+p.getTariff()+"\n"+"Validity: "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n"); 
+					 System.out.println("-----------------------------------");
+				}
+			}
+		
 		}
 		
 		//===================================================Unsub Plan==========================================================
@@ -385,23 +393,24 @@ public class Tester {
 			int ans;
 			System.out.println("List of plan that you currently subscribed in Dispur Wireless:");
 			custSubsDetails(Id);// call method to view current subscribed list
-				 
-			System.out.println("Do you really want to continue unsubscribe your current plan?");
-			System.out.print("1-Yes || 2-No : ");
-			ans = sc.nextInt();
-			 
-			switch (ans){
-				case 1:
-					System.out.println("Enter Plan Id that you want to cancel subscription");
-					ans = sc.nextInt();
-					
-					daos.delPlan(Id,ans);
-					break;
-				case 2:
-					return;
-				default:
-					System.out.println("Invalid Input!");
-			}
+			
+			do {
+				System.out.println("Do you really want to continue unsubscribe your current plan?");
+				System.out.print("1-Yes || 2-No : ");
+				ans = sc.nextInt();
+				switch (ans){
+					case 1:
+						System.out.println("Enter Plan Id that you want to cancel subscription");
+						int pln = sc.nextInt();
+						daos.delPlan(Id,pln);
+						break;
+					case 2:
+						return;
+					default:
+						System.out.println("Invalid Input!");
+				}
+				
+			}while(ans != 1 & ans != 2);
 			
 		}
 		
@@ -409,10 +418,8 @@ public class Tester {
 		
 		public void updateCustDetails(String Id) {
 			
-//			System.out.println("Proceed with updating details?");
-//			System.out.print("1-Yes | 2-No : ");
-			String[] cust = customerInput();
-			daoc.updateCustDetails(Id, cust[0], cust[1], cust[2], cust[3]);
+			String[] cust = customerInput();// call customer input method
+			daoc.updateCustDetails(Id, cust[0], cust[1], cust[2], cust[3]);// assign returned data to the database
 			return;
 			
 		}
@@ -422,7 +429,7 @@ public class Tester {
 	public void subscribe(String Id) {
 		
 		ArrayList<Plan> list=new ArrayList<Plan>();
-		list=daop.fetchPlan();
+		list=daop.fetchPlan(); // fetch list of plan from the database
 		boolean sel = true;
 		do {	
 			
@@ -432,8 +439,9 @@ public class Tester {
 			for(Plan p : list)
 			{
 				 if(planId == p.getPlanId()) {
+					 // display details of selected plan
 					 System.out.println("Plan Id: "+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+"\n"+"Validity: "+p.getValidity()+"\n");
-					 System.out.println("Amount is RM "+p.getTariff());
+					 System.out.println("Amount is RM "+p.getTariff() + "/min");// display tariff
 					 System.out.println("Proceed with Subscription?");
 					 System.out.println("1.Yes"+"\n"+"2.No");
 					 int select = sc.nextInt();
@@ -442,13 +450,20 @@ public class Tester {
 						 Subscribe sub = new Subscribe(Tester.getRandomIntegerBetweenRange(1,100),Id,planId,Tester.getRandomIntegerBetweenRange(1,10));
 						 daos.addSubs(sub);
 						 break;
+					 }else if(select == 2) {
+						 System.out.println("\nCancel subscription");
+						 sel = false;
+						 break;
+					 }else {
+						 System.out.println("\nInvalid input");
 					 }
+					 
 				 }
 			}
 			
 		}while(sel);
 		
-		customerMenu(Id);
+		customerMenu(Id);// return to customer menu
 		
 	}
 	
@@ -467,10 +482,11 @@ public class Tester {
 			ans = sc.nextInt();
 			switch (ans){
 		 	case 1:
-		 		daos.changeSubs(Id, current, changedId);
+		 		daos.changeSubs(Id, current, changedId);// pass customer id, current plan id, and changed plan id
 		 		return;
 		 	case 2:
-		 		return;
+		 		System.out.println("Changing plan cancelled ");
+		 		return;// return to customer menu
 		 	default:
 				System.out.println("Invalid Input!");
 			}
@@ -486,11 +502,13 @@ public class Tester {
 		
 		System.out.println("Enter Plan Details: ");
 		
-		String[] plan = adminPlanInput();//return details of plan from admin input
-		int Id = Tester.getRandomIntegerBetweenRange(1, 100);
+		String[] plan = adminPlanInput();//call method for taking input from admin
+		int Id = Tester.getRandomIntegerBetweenRange(1, 100);// generate random number
+		
+		// create new object called plan
 		Plan pln = new Plan(Id,plan[0],plan[1],Double.parseDouble(plan[2]),Integer.parseInt(plan[3]),plan[4]);
-		daop.addPlan(pln);
-		adminMenu();
+		daop.addPlan(pln);// pass plan object to database
+		adminMenu();// go back to admin menu
 		
 	}
 	
@@ -498,9 +516,10 @@ public class Tester {
 	
 	public void updatePlan(int Id) {
 		
-		String[] plan = adminPlanInput();
+		String[] plan = adminPlanInput();// method to call admin input
+		//pass received input from admit to the database
 		daop.updatePlan(Id, plan[0], plan[1], Double.parseDouble(plan[2]), Integer.parseInt(plan[3]), plan[4]);
-		adminMenu();
+		adminMenu(); // return to admin menu
 		
 	}
 	
@@ -509,20 +528,39 @@ public class Tester {
 	public void removePlan() {
 		
 		System.out.print("Insert Plan id you want to delete: ");
-		int pid =sc.nextInt();
-		daop.deletePlan(pid);
-		adminMenu();
+		int pid =sc.nextInt();// accept id that wanted to delete
+		daop.deletePlan(pid);// delete the table content with that id from the database
+		adminMenu();// return to admin menu
 		
 	}
 	
-	//==============================================Admin Remove Customer======================================================
+	//==============================================Operator Remove Customer======================================================
 	
 	public void removeCust() {
 		
-		System.out.print("Insert Customer id you want to delete: ");
-		String id =sc.nextLine();
-		daoc.delCustomer(id);
-		mainMenu();
+		System.out.println("Insert Customer id you want to delete: ");
+		String id =sc.nextLine();		
+		custDetails(id); // view customer details
+		int ans;
+		do {
+			System.out.println("Proceed deleting this customer?");
+			System.out.println("1-Yes | 2-No");
+			ans = sc.nextInt();
+			switch(ans) {
+				case 1:
+					daoc.delCustomer(id); // delete from table customer
+					break;
+				case 2:
+					System.out.println("Action cancelled");
+					break;
+				default:
+					System.out.println("Invalid input!");
+
+			}
+			
+		}while(ans != 1 & ans !=2);
+		
+		mainMenu();// back to main menu
 		
 	}
 
@@ -532,11 +570,13 @@ public class Tester {
 	public void planList(){
 		
 		ArrayList<Plan> list=new ArrayList<Plan>();
-		list=daop.fetchPlan();
-		 for(Plan p : list)
-		 {
-			 System.out.println("\nPlan Id: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif: "+p.getTariff()+"\n"+"Validity: "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n");
-		 }
+		list=daop.fetchPlan();// fetch all data from plan table
+		System.out.println("\n=================List of Plan available in Dispur Wireless==================");
+		for(Plan p : list)
+		{
+			 System.out.println("\nPlan Id: "+p.getPlanId()+"\n"+"Plan Name: "+p.getPlanName()+"\n"+"Plan Type: "+p.getPlanType()+" \n"+ "Tarrif (Rate/min): "+p.getTariff()+"/1"+"\n"+"Validity (in days): "+p.getValidity()+"\n"+"Rental: "+p.getRental()+"\n");
+			 System.out.println("-----------------------------");
+		}
 		
 	}
 	
@@ -548,19 +588,20 @@ public class Tester {
 		
 		sc.nextLine();
 		System.out.println("====== Enter Your Details ======");
-		System.out.print("Name: ");
+		
+		System.out.print("Name: ");// get customer name
 		String name= sc.nextLine();
 		cust[0] = name;
 		
-		System.out.print("Address: ");
+		System.out.print("Address: "); // get customer address
 		String address= sc.nextLine();
 		cust[1] = address;
 		
-		System.out.print("Email: ");
+		System.out.print("Email: "); // get customer email
 		String email= sc.nextLine();
 		cust[2] = email;
 		
-		System.out.print("Contact Number: ");
+		System.out.print("Contact Number: "); //get contact number
 		String contactNum= sc.nextLine();
 		cust[3] = contactNum;
 		
@@ -574,33 +615,31 @@ public class Tester {
 		
 		String[] pln = new String[5];
 		System.out.println("====== Enter Plan Details ======");
+		
 		sc.nextLine();
-		System.out.print("Name: ");
+		System.out.print("Name: "); // get plan name
 		String plnName= sc.nextLine();
 		pln[0] = plnName;
 		
-		System.out.print("Type: ");
+		System.out.print("Type (Data/Voice): "); // get plan type
 		String type= sc.nextLine();
 		pln[1] = type;
 		
-		System.out.print("Tariff: ");
+		System.out.print("Tariff (Rate/min): "); // get plan tariff
 		String tariff= String.valueOf(sc.nextDouble());
 		pln[2] = tariff;
 			
-		System.out.print("Validity: ");
+		System.out.print("Validity (Days): "); // get plan validity
 		String validity= String.valueOf(sc.nextInt());
 		pln[3] = validity;
 		
 		sc.nextLine();
-		System.out.print("Rental: ");
+		System.out.print("Rental (Yes/No): "); // get plan rental
 		String rental= sc.nextLine();
 		pln[4] = rental;
 		
 		return pln;
 		
 	}
-	
-//	public void checkDuration() {
-//		
-//	}
+
 }
